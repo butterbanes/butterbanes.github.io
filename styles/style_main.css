@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, Helvetica, Sans;
+}
+
+.center-main {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.topnav {
+    background-color: #b521ff;
+    overflow: hidden;
+}
+
+.topnav a {
+    float: left;
+    color: #eded05;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active {
+    background-color: #6c1299;
+    color: #dea2fc;
+}
+
+.tax_perl_form {
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    text-align: center;
+    font-size: 25px;
+    display: block;
+    background-color: #b0b0b0;
+    color: #ffffff;
+} 
