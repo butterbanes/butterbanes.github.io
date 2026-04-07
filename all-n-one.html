@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethan Smith</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0f14;
+      --bg2:       #13161e;
+      --bg3:       #1a1e2a;
+      --accent:    #c8a96e;
+      --accent2:   #7eb8c9;
+      --text:      #e8e4dc;
+      --muted:     #7a7d8a;
+      --border:    rgba(200,169,110,0.18);
+      --nav-h:     68px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(13,15,20,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-links li a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      transition: all 0.22s ease;
+    }
+
+    .nav-links li a:hover,
+    .nav-links li a.active {
+      color: var(--accent);
+      border-color: var(--border);
+      background: rgba(200,169,110,0.07);
+    }
+
+    /* ── PAGES ── */
+    .page { display: none; min-height: 100vh; padding-top: var(--nav-h); }
+    .page.active { display: block; }
+
+    /* ── HOME ── */
+    #home {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #home.active { display: flex; }
+
+    .home-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 40%, rgba(200,169,110,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(126,184,201,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .home-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .home-content {
+      position: relative;
+      z-index: 1;
+      padding: 60px 24px;
+    }
+
+    .home-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.1s forwards;
+    }
+
+    .home-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      line-height: 1.0;
+      color: var(--text);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.25s forwards;
+    }
+
+    .home-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .home-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 60px;
+      letter-spacing: 0.03em;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s forwards;
+    }
+
+    /* ── COUNTDOWN ── */
+    .countdown-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.55s forwards;
+    }
+
+    .countdown {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.65s forwards;
+    }
+
+    .cd-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 28px;
+      min-width: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cd-block::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .cd-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.8rem;
+      color: var(--accent);
+      line-height: 1;
+      min-width: 2ch;
+      text-align: center;
+    }
+
+    .cd-unit {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .cd-sep {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem;
+      color: var(--border);
+      align-self: center;
+      margin-top: -14px;
+    }
+
+    .grad-done {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    /* ── SECTION SHARED ── */
+    .section-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 64px 32px 80px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .section-title em { color: var(--accent); font-style: italic; }
+
+    .section-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 40px;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    @media (max-width: 620px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .about-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 30px;
+      position: relative;
+    }
+
+    .about-card-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .about-card p {
+      font-size: 0.97rem;
+      color: #b8b4ac;
+      line-height: 1.75;
+    }
+
+    .about-card p strong { color: var(--text); font-weight: 500; }
+
+    .pets-note {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 20px;
+      padding: 14px 20px;
+      border-left: 2px solid var(--accent2);
+      background: rgba(126,184,201,0.05);
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* ── COURSES ── */
+    .courses-group { margin-bottom: 48px; }
+
+    .courses-dept {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 6px;
+    }
+
+    .courses-dept-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.45rem;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .courses-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) { .courses-split { grid-template-columns: 1fr; } }
+
+    .courses-col-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .course-list { list-style: none; }
+
+    .course-list li {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: #b0aca4;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      gap: 12px;
+      transition: background 0.15s;
+      border-radius: 4px;
+    }
+
+    .course-list li:hover { background: var(--bg3); color: var(--text); }
+
+    .course-list li .code {
+      color: var(--accent);
+      min-width: 60px;
+      font-weight: 500;
+    }
+
+    .course-list li.in-progress { color: var(--accent2); opacity: 0.85; }
+    .course-list li.in-progress .code { color: var(--accent2); }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-group { margin-bottom: 48px; }
+
+    .proj-context-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .proj-course-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .proj-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .proj-list li {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-size: 0.95rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .proj-list li:hover {
+      border-color: rgba(200,169,110,0.45);
+      transform: translateX(4px);
+    }
+
+    .proj-list li::before {
+      content: '→';
+      color: var(--accent);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .proj-empty {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-style: italic;
+      padding: 12px 0;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeUp 0.55s forwards;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">ES</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')"   id="nav-home"    class="active">Home</a></li>
+    <li><a href="#" onclick="showPage('about')"  id="nav-about">About</a></li>
+    <li><a href="#" onclick="showPage('courses')" id="nav-courses">Courses</a></li>
+    <li><a href="#" onclick="showPage('projects')" id="nav-projects">Projects</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HOME ══ -->
+<section class="page active" id="home">
+  <div class="home-bg"></div>
+  <div class="home-grid-lines"></div>
+  <div class="home-content">
+    <p class="home-eyebrow">Welcome</p>
+    <h1 class="home-name">Ethan <em>Smith</em></h1>
+    <p class="home-sub">Computer Science &nbsp;·&nbsp; UNA &nbsp;·&nbsp; Cybersecurity &amp; Mathematics</p>
+
+    <p class="countdown-label">⌛ Graduation Countdown — May 8, 2026</p>
+    <div class="countdown" id="countdown">
+      <div class="cd-block"><span class="cd-num" id="cd-days">--</span><span class="cd-unit">Days</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-block"><span class="cd-num" id="cd-hours">--</span><span class="cd-unit">Hours</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-block"><span class="cd-num" id="cd-mins">--</span><span class="cd-unit">Minutes</span></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-block"><span class="cd-num" id="cd-secs">--</span><span class="cd-unit">Seconds</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section class="page" id="about">
+  <div class="section-wrap">
+    <h2 class="section-title">About <em>Me</em></h2>
+    <div class="section-rule"></div>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-card-label">Where I'm From</div>
+        <p>
+          I grew up in Alabama around its <strong>Rocket City</strong>, raised by two great parents.
+        </p>
+        <p class="pets-note">🐾 Current pets: <strong>Ruby</strong> &amp; <strong>Sadie</strong> — both dogs.</p>
+      </div>
+
+      <div class="about-card">
+        <div class="about-card-label">Education</div>
+        <p>
+          From the Huntsville area, I attended gradeschool locally before pursuing a
+          <strong>Bachelor of Science in Computer Science</strong> at the
+          <strong>University of North Alabama (UNA)</strong>.
+        </p>
+        <br/>
+        <p>
+          Anticipated minors in <strong>Cybersecurity</strong> and <strong>Mathematics</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COURSES ══ -->
+<section class="page" id="courses">
+  <div class="section-wrap">
+    <h2 class="section-title"><em>Courses</em></h2>
+    <div class="section-rule"></div>
+
+    <!-- CS -->
+    <div class="courses-group">
+      <div class="courses-dept">Department</div>
+      <div class="courses-dept-title">Computer Science</div>
+      <div class="courses-split">
+        <div>
+          <div class="courses-col-label">Completed</div>
+          <ul class="course-list">
+            <li><span class="code">CS135</span>  Computer Skills for Problem Solving <em style="font-size:0.7em;color:var(--muted)">(via AP)</em></li>
+            <li><span class="code">CS155</span>  Computer Science I</li>
+            <li><span class="code">CS245</span>  Discrete Structures</li>
+            <li><span class="code">CS255</span>  Computer Science II</li>
+            <li><span class="code">CS310</span>  Computer Organization &amp; Assembly</li>
+            <li><span class="code">CS311</span>  Computer Architecture</li>
+            <li><span class="code">CS355</span>  Data Structures and Algorithms</li>
+            <li><span class="code">CS410W</span> Programming Languages</li>
+            <li><span class="code">CS420</span>  Operating Systems</li>
+            <li><span class="code">CS440</span>  Computer Networking</li>
+            <li><span class="code">CS447</span>  Database Systems</li>
+            <li><span class="code">CS455</span>  Software Engineering</li>
+            <li><span class="code">CS470</span>  Artificial Intelligence</li>
+          </ul>
+        </div>
+        <div><!-- No in-progress CS courses --></div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- CIS / ITE -->
+    <div class="courses-group">
+      <div class="courses-dept">Department</div>
+      <div class="courses-dept-title">Computer Information Systems &amp; IT</div>
+      <div class="courses-split">
+        <div>
+          <div class="courses-col-label">Completed</div>
+          <ul class="course-list">
+            <li><span class="code">CIS315</span> Advanced OOP (Java)</li>
+            <li><span class="code">ITE249</span> Infrastructure Security</li>
+            <li><span class="code">ITE369</span> Usable Privacy and Security</li>
+            <li><span class="code">ITE379</span> Secure Software Development</li>
+          </ul>
+        </div>
+        <div>
+          <div class="courses-col-label">In Progress</div>
+          <ul class="course-list">
+            <li class="in-progress"><span class="code">CIS499</span> Independent Study — AI Research</li>
+            <li class="in-progress"><span class="code">ITE359</span> Digital Forensics</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- MATH -->
+    <div class="courses-group">
+      <div class="courses-dept">Department</div>
+      <div class="courses-dept-title">Mathematics</div>
+      <div class="courses-split">
+        <div>
+          <div class="courses-col-label">Completed</div>
+          <ul class="course-list">
+            <li><span class="code">MA100</span>  Intermediate Algebra</li>
+            <li><span class="code">MA112</span>  College Algebra</li>
+            <li><span class="code">MA113</span>  College Trigonometry</li>
+            <li><span class="code">MA125</span>  Calculus I</li>
+            <li><span class="code">MA126</span>  Calculus II</li>
+            <li><span class="code">MA227</span>  Calculus III</li>
+            <li><span class="code">MA331</span>  Linear Algebra</li>
+            <li><span class="code">MA345</span>  Applied Statistics I</li>
+          </ul>
+        </div>
+        <div>
+          <div class="courses-col-label">In Progress</div>
+          <ul class="course-list">
+            <li class="in-progress"><span class="code">MA355</span> Differential Equations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ PROJECTS ══ -->
+<section class="page" id="projects">
+  <div class="section-wrap">
+    <h2 class="section-title"><em>Projects</em></h2>
+    <div class="section-rule"></div>
+
+    <div class="projects-group">
+      <div class="proj-context-label">CS355 — Data Structures &amp; Algorithms</div>
+      <div class="proj-course-title">Data Structures &amp; Algorithms</div>
+      <ul class="proj-list">
+        <li>Standard Template Library — Map Data Structure</li>
+        <li>Binary Search Tree</li>
+        <li>Dijkstra's Emergency</li>
+      </ul>
+    </div>
+
+    <div class="projects-group">
+      <div class="proj-context-label">CS420 — Operating Systems</div>
+      <div class="proj-course-title">Operating Systems</div>
+      <ul class="proj-list">
+        <li>unash</li>
+      </ul>
+    </div>
+
+    <div class="projects-group">
+      <div class="proj-context-label">CS440 — Computer Networking</div>
+      <div class="proj-course-title">Computer Networking</div>
+      <ul class="proj-list">
+        <li>Fortune Teller</li>
+        <li>Configuration Parsing</li>
+        <li>Cryptographic Arithmetic</li>
+      </ul>
+    </div>
+
+    <div class="projects-group">
+      <div class="proj-context-label">CS455 — Software Engineering</div>
+      <div class="proj-course-title">Software Engineering</div>
+      <ul class="proj-list">
+        <li>Makerspace Certification Tracker</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // ── SPA NAV ──
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('nav-' + id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+
+  // ── COUNTDOWN ──
+  const gradDate = new Date('2026-05-08T20:00:00');
+
+  function updateCountdown() {
+    const now  = new Date();
+    const diff = gradDate - now;
+
+    if (diff <= 0) {
+      document.getElementById('countdown').innerHTML =
+        '<p class="grad-done">🎓 Congratulations, Graduate!</p>';
+      return;
+    }
+
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000)  / 60000);
+    const secs  = Math.floor((diff % 60000)    / 1000);
+
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('cd-days').textContent  = pad(days);
+    document.getElementById('cd-hours').textContent = pad(hours);
+    document.getElementById('cd-mins').textContent  = pad(mins);
+    document.getElementById('cd-secs').textContent  = pad(secs);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
