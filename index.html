@@ -527,6 +527,7 @@
       <div class="cd-block"><span class="cd-num" id="cd-secs">--</span><span class="cd-unit">Seconds</span></div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.9.1/tsparticles.confetti.bundle.min.js"></script>
     <script>
       // ── SPA NAV ──
       function showPage(id) {
@@ -536,29 +537,50 @@
         document.getElementById('nav-' + id).classList.add('active');
         window.scrollTo(0, 0);
       }
-
       document.querySelectorAll('.nav-links a').forEach(a => {
         a.addEventListener('click', e => e.preventDefault());
       });
 
       // ── COUNTDOWN ──
+      const colors = ['#592B8A', '#FFB92A', '#FFFFFF'];
+
+      function frame(end) {
+        confetti({
+          particleCount: 2,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: colors,
+        });
+        confetti({
+          particleCount: 2,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: colors,
+        });
+        if (Date.now() < end) {
+          requestAnimationFrame(() => frame(end));
+        }
+      }
+
       const gradDate = new Date('2026-05-08T20:00:00');
 
       function updateCountdown() {
         const now  = new Date();
         const diff = gradDate - now;
-
         if (diff <= 0) {
+          clearInterval(interval);
           document.getElementById('countdown').innerHTML =
-            '<p class="grad-done">🎓 Congratulations, Graduate!</p>';
+            '<p class="grad-done">GRADUATED</p>';
+          const end = Date.now() + 15 * 1000;
+          frame(end);
           return;
         }
-
         const days  = Math.floor(diff / 86400000);
         const hours = Math.floor((diff % 86400000) / 3600000);
         const mins  = Math.floor((diff % 3600000)  / 60000);
         const secs  = Math.floor((diff % 60000)    / 1000);
-
         const pad = n => String(n).padStart(2, '0');
         document.getElementById('cd-days').textContent  = pad(days);
         document.getElementById('cd-hours').textContent = pad(hours);
@@ -567,7 +589,7 @@
       }
 
       updateCountdown();
-      setInterval(updateCountdown, 1000);
+      const interval = setInterval(updateCountdown, 1000);
     </script>
   
     <!-- ══ SOCIALS ══ -->
