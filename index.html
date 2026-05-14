@@ -158,80 +158,82 @@
       animation: fadeUp 0.7s 0.4s forwards;
     }
 
-    /* ── COUNTDOWN ── */
-    .countdown-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.55s forwards;
-    }
+    /*
+      /* ── COUNTDOWN ── 
+      .countdown-label {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent2);
+        margin-bottom: 20px;
+        opacity: 0;
+        animation: fadeUp 0.7s 0.55s forwards;
+      }
 
-    .countdown {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.7s 0.65s forwards;
-    }
+      .countdown {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        opacity: 0;
+        animation: fadeUp 0.7s 0.65s forwards;
+      }
 
-    .cd-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 22px 28px;
-      min-width: 90px;
-      position: relative;
-      overflow: hidden;
-    }
+      .cd-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 22px 28px;
+        min-width: 90px;
+        position: relative;
+        overflow: hidden;
+      }
 
-    .cd-block::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    }
+      .cd-block::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      }
 
-    .cd-num {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.8rem;
-      color: var(--accent);
-      line-height: 1;
-      min-width: 2ch;
-      text-align: center;
-    }
+      .cd-num {
+        font-family: 'DM Serif Display', serif;
+        font-size: 2.8rem;
+        color: var(--accent);
+        line-height: 1;
+        min-width: 2ch;
+        text-align: center;
+      }
 
-    .cd-unit {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 6px;
-    }
+      .cd-unit {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.62rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 6px;
+      }
 
-    .cd-sep {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.4rem;
-      color: var(--border);
-      align-self: center;
-      margin-top: -14px;
-    }
+      .cd-sep {
+        font-family: 'DM Serif Display', serif;
+        font-size: 2.4rem;
+        color: var(--border);
+        align-self: center;
+        margin-top: -14px;
+      }
 
-    .grad-done {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2rem;
-      color: var(--accent);
-      font-style: italic;
-    }
+      .grad-done {
+        font-family: 'DM Serif Display', serif;
+        font-size: 2rem;
+        color: var(--accent);
+        font-style: italic;
+      }
+    */
 
     /* ── SOCIALS ── */
     .socials {
@@ -514,20 +516,8 @@
   <div class="home-content">
     <p class="home-eyebrow">Welcome</p>
     <h1 class="home-name">Ethan <em>Smith</em></h1>
-    <p class="home-sub"><span style="font-size: 24px;"<strong><em>UNA</em></strong></span> &nbsp;·&nbsp; Computer Science &nbsp;·&nbsp; Cybersecurity &nbsp;·&nbsp; Mathematics</p>
+    <p class="home-sub">Computer Science &nbsp;·&nbsp; Cybersecurity &nbsp;·&nbsp; Mathematics</p>
 
-    <p class="countdown-label">⌛ Graduation Countdown — May 8, 2026</p>
-    <div class="countdown" id="countdown">
-      <div class="cd-block"><span class="cd-num" id="cd-days">--</span><span class="cd-unit">Days</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-block"><span class="cd-num" id="cd-hours">--</span><span class="cd-unit">Hours</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-block"><span class="cd-num" id="cd-mins">--</span><span class="cd-unit">Minutes</span></div>
-      <span class="cd-sep">:</span>
-      <div class="cd-block"><span class="cd-num" id="cd-secs">--</span><span class="cd-unit">Seconds</span></div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.9.1/tsparticles.confetti.bundle.min.js"></script>
     <script>
       // ── SPA NAV ──
       function showPage(id) {
@@ -541,55 +531,6 @@
         a.addEventListener('click', e => e.preventDefault());
       });
 
-      // ── COUNTDOWN ──
-      const colors = ['#592B8A', '#FFB92A', '#FFFFFF'];
-
-      function frame(end) {
-        confetti({
-          particleCount: 2,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 },
-          colors: colors,
-        });
-        confetti({
-          particleCount: 2,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 },
-          colors: colors,
-        });
-        if (Date.now() < end) {
-          requestAnimationFrame(() => frame(end));
-        }
-      }
-
-      const gradDate = new Date('2026-05-08T20:00:00');
-
-      function updateCountdown() {
-        const now  = new Date();
-        const diff = gradDate - now;
-        if (diff <= 0) {
-          clearInterval(interval);
-          document.getElementById('countdown').innerHTML =
-            '<p class="grad-done">GRADUATED</p>';
-          const end = Date.now() + 15 * 1000;
-          frame(end);
-          return;
-        }
-        const days  = Math.floor(diff / 86400000);
-        const hours = Math.floor((diff % 86400000) / 3600000);
-        const mins  = Math.floor((diff % 3600000)  / 60000);
-        const secs  = Math.floor((diff % 60000)    / 1000);
-        const pad = n => String(n).padStart(2, '0');
-        document.getElementById('cd-days').textContent  = pad(days);
-        document.getElementById('cd-hours').textContent = pad(hours);
-        document.getElementById('cd-mins').textContent  = pad(mins);
-        document.getElementById('cd-secs').textContent  = pad(secs);
-      }
-
-      updateCountdown();
-      const interval = setInterval(updateCountdown, 1000);
     </script>
   
     <!-- ══ SOCIALS ══ -->
@@ -650,7 +591,7 @@
         </p>
         <br/>
         <p>
-          Anticipated minors in <strong>Cybersecurity</strong> and <strong>Mathematics</strong>.
+          Minored in <strong>Cybersecurity</strong> and <strong>Mathematics</strong>.
         </p>
       </div>
     </div>
@@ -686,7 +627,6 @@
             <li><span class="code">CS470</span>  Artificial Intelligence</li>
           </ul>
         </div>
-        <div><!-- No in-progress CS courses --></div>
       </div>
     </div>
 
@@ -701,16 +641,11 @@
           <div class="courses-col-label">Completed</div>
           <ul class="course-list">
             <li><span class="code">CIS315</span> Advanced OOP (Java)</li>
+            <li><span class="code">CIS499</span> Independent Study — AI Research</li>
             <li><span class="code">ITE249</span> Infrastructure Security</li>
+            <li><span class="code">ITE359</span> Digital Forensics</li>
             <li><span class="code">ITE369</span> Usable Privacy and Security</li>
             <li><span class="code">ITE379</span> Secure Software Development</li>
-          </ul>
-        </div>
-        <div>
-          <div class="courses-col-label">In Progress</div>
-          <ul class="course-list">
-            <li class="in-progress"><span class="code">CIS499</span> Independent Study — AI Research</li>
-            <li class="in-progress"><span class="code">ITE359</span> Digital Forensics</li>
           </ul>
         </div>
       </div>
@@ -734,12 +669,7 @@
             <li><span class="code">MA227</span>  Calculus III</li>
             <li><span class="code">MA331</span>  Linear Algebra</li>
             <li><span class="code">MA345</span>  Applied Statistics I</li>
-          </ul>
-        </div>
-        <div>
-          <div class="courses-col-label">In Progress</div>
-          <ul class="course-list">
-            <li class="in-progress"><span class="code">MA355</span> Differential Equations</li>
+            <li><span class="code">MA355</span>  Differential Equations</li>
           </ul>
         </div>
       </div>
@@ -755,12 +685,21 @@
     <div class="section-rule"></div>
 
     <div class="projects-group">
+      <div class="proj-context-label">Personal Projects</div>
+      <div class="proj-course-title">Personal Projects</div>
+      <ul class="proj-list">
+        <li>Cppuccino ― C++</li>
+        <li>AmplifAI ― Python</li>
+      </ul>
+    </div>
+    
+    <div class="projects-group">
       <div class="proj-context-label">CS355 — Data Structures &amp; Algorithms</div>
       <div class="proj-course-title">Data Structures &amp; Algorithms</div>
       <ul class="proj-list">
-        <li>Standard Template Library — Map Data Structure</li>
-        <li>Binary Search Tree</li>
-        <li>Dijkstra's Emergency</li>
+        <li>Standard Template Library (Map Data Structure) ― C++</li>
+        <li>Binary Search Tree ― C++</li>
+        <li>Dijkstra's Emergency ― C++</li>
       </ul>
     </div>
 
@@ -768,7 +707,7 @@
       <div class="proj-context-label">CS420 — Operating Systems</div>
       <div class="proj-course-title">Operating Systems</div>
       <ul class="proj-list">
-        <li>unash</li>
+        <li>unash ― C++</li>
       </ul>
     </div>
 
@@ -776,9 +715,9 @@
       <div class="proj-context-label">CS440 — Computer Networking</div>
       <div class="proj-course-title">Computer Networking</div>
       <ul class="proj-list">
-        <li>Fortune Teller</li>
-        <li>Configuration Parsing</li>
-        <li>Cryptographic Arithmetic</li>
+        <li>Fortune Teller ― C</li>
+        <li>Configuration Parsing ― C</li>
+        <li>Cryptographic Arithmetic ― C</li>
       </ul>
     </div>
 
@@ -786,7 +725,7 @@
       <div class="proj-context-label">CS455 — Software Engineering</div>
       <div class="proj-course-title">Software Engineering</div>
       <ul class="proj-list">
-        <li>Makerspace Certification Tracker</li>
+        <li>Makerspace Certification Tracker ― C++</li>
       </ul>
     </div>
 
