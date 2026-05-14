@@ -526,11 +526,17 @@
         document.getElementById(id).classList.add('active');
         document.getElementById('nav-' + id).classList.add('active');
         window.scrollTo(0, 0);
+        sessionStorage.setItem('lastPage', id);
       }
       document.querySelectorAll('.nav-links a').forEach(a => {
         a.addEventListener('click', e => e.preventDefault());
       });
 
+      // keep knowledge of last page visited
+      document.addEventListener('DOMContentLoaded', () => {
+        const lastPage = sessionStorage.getItem('lastPage') || 'home';
+        showPage(lastPage);
+      });
     </script>
   
     <!-- ══ SOCIALS ══ -->
