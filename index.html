@@ -156,6 +156,73 @@
       border-right: 2px solid var(--shadow-light);
     }
 
+    /* ── HAMBURGER BUTTON (mobile only) ── */
+    .hamburger-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 44px;
+      height: 40px;
+      margin-left: auto;
+      background: var(--raised);
+      border-top: 2px solid var(--shadow-light);
+      border-left: 2px solid var(--shadow-light);
+      border-bottom: 2px solid var(--shadow-dark);
+      border-right: 2px solid var(--shadow-dark);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .hamburger-btn span {
+      display: block;
+      width: 22px;
+      height: 3px;
+      background: var(--neon2);
+      box-shadow: 0 0 6px var(--neon2);
+    }
+    .hamburger-btn:active {
+      border-top: 2px solid var(--shadow-dark);
+      border-left: 2px solid var(--shadow-dark);
+      border-bottom: 2px solid var(--shadow-light);
+      border-right: 2px solid var(--shadow-light);
+    }
+
+    /* ── MOBILE NAV ── */
+    @media (max-width: 700px) {
+      .hamburger-btn { display: flex; }
+
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--bg2);
+        border-bottom: 3px solid var(--neon);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+        z-index: 99;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links li a {
+        width: 100%;
+        text-align: center;
+        border-left: none;
+        border-right: none;
+        padding: 14px 16px;
+      }
+    }
+
     /* ── PAGES ── */
     .page { display: none; min-height: 100vh; padding-top: 60px; }
     .page.active { display: block; }
@@ -183,6 +250,9 @@
       position: relative;
       z-index: 1;
       padding: 48px 24px;
+      max-width: 100%;
+      overflow-x: hidden;
+      width: 100%;
     }
 
     .home-eyebrow {
@@ -212,6 +282,9 @@
       letter-spacing: 0.1em;
     }
 
+    .home-sub-seg { display: inline; }
+    .home-sub-sep { display: inline; }
+
     .home-workstatus {
       font-size: 1.5rem;
       color: var(--gold);
@@ -223,6 +296,7 @@
     /* ── MARQUEE / TICKER ── */
     .marquee-wrap {
       width: 100%;
+      max-width: 100%;
       background: #000;
       border-top: 2px solid var(--neon);
       border-bottom: 2px solid var(--neon);
@@ -230,9 +304,15 @@
       padding: 6px 0;
       margin: 24px 0;
       overflow: hidden;
+      position: relative;
+      height: 1.6rem;
     }
     .marquee-inner {
-      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 100%;
+      display: block;
+      width: max-content;
       white-space: nowrap;
       animation: marquee 12s linear infinite;
       font-family: 'VT323', monospace;
@@ -240,10 +320,11 @@
       color: var(--neon);
       text-shadow: 0 0 8px var(--neon);
       letter-spacing: 0.15em;
+      will-change: transform;
     }
     @keyframes marquee {
-      0%   { transform: translateX(100vw); }
-      100% { transform: translateX(-100%); }
+      0%   { transform: translateX(0%); }
+      100% { transform: translateX(calc(-100% - 100vw)); }
     }
 
     /* ── BLINKING TEXT ── */
@@ -441,6 +522,13 @@
     }
     .about-card p strong { color: var(--gold); }
 
+    .about-photo {
+      width: 500px;
+      height: 500px;
+      max-width: 100%;
+      object-fit: cover;
+    }
+
     .pets-note {
       font-size: 0.85rem;
       color: var(--neon2);
@@ -589,6 +677,60 @@
       transition: color 0.2s;
     }
     .privacy-link:hover { color: var(--neon); text-shadow: 0 0 4px var(--neon); }
+
+    /* ── MOBILE OVERRIDES (≤700px) ── */
+    @media (max-width: 700px) {
+
+      /* home-sub: wrap onto its own line per segment, delimited by "::" */
+      .home-sub {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+      .home-sub-seg { display: block; }
+      .home-sub-sep { display: none; }
+
+      /* email-form intro / section above the form wraps line by line */
+      .email-form p {
+        white-space: normal;
+        word-break: break-word;
+        padding: 0 12px;
+        text-align: center;
+      }
+
+      .email-form form {
+        max-width: 100%;
+        width: 100%;
+        padding: 0 16px;
+      }
+
+      .email-form input,
+      .email-form textarea {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      /* socials wrap naturally, just ensure full-width centering */
+      .socials {
+        width: 100%;
+        padding: 0 12px;
+      }
+
+      /* about section: artifacts (cards) wrap to single column */
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      /* about section image scales to container instead of fixed 500x500 */
+      .about-photo {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        display: block;
+        margin: 12px auto 0;
+      }
+    }
   </style>
 </head>
   <body>
@@ -598,12 +740,17 @@
         <img src="./images/butterbeans.jpg" alt="">
         <span>E. SMITH</span>
       </div>
-      <ul class="nav-links">
+      <ul class="nav-links" id="nav-links">
         <li><a href="#" onclick="showPage('home')"        id="nav-home"    class="active">[ HOME ]</a></li>
         <li><a href="#" onclick="showPage('about')"       id="nav-about">[ ABOUT ]</a></li>
         <li><a href="#" onclick="showPage('courses')"     id="nav-courses">[ COURSES ]</a></li>
         <li><a href="#" onclick="showPage('projects')"    id="nav-projects">[ PROJECTS ]</a></li>
       </ul>
+      <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileNav()" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </nav>
 
     <!-- ══ HOME ══ -->
@@ -611,7 +758,7 @@
       <div class="home-content">
         <p class="home-eyebrow">★ WELCOME TO ME ★</p>
         <h1 class="home-name">ETHAN SMITH</h1>
-        <p class="home-sub">Computer Science &nbsp;::&nbsp; Cybersecurity &nbsp;::&nbsp; Mathematics</p>
+        <p class="home-sub"><span class="home-sub-seg">Computer Science</span><span class="home-sub-sep">&nbsp;::&nbsp;</span><span class="home-sub-seg">Cybersecurity</span><span class="home-sub-sep">&nbsp;::&nbsp;</span><span class="home-sub-seg">Mathematics</span></p>
         <div class="home-workstatus">
           <p class="blink">OPEN TO WORK</p>
         </div>
@@ -683,7 +830,7 @@
                 I was wrong of course, but to this day I'm still glad I chose Computer Science, and especially thankful that UNA provided me the opportunity to pursue it.
               </p>
               <p class="pets-note"><span class="blink">►</span> Current pets: <strong>Sadie</strong> &amp; <strong>Ruby</strong> — both dogs.</p>
-              <img src="images/sadie-n-ruby.jpg" alt="My dogs, Sadie and Ruby" style="width: 500px; height: 500px;">
+              <img src="images/sadie-n-ruby.jpg" alt="My dogs, Sadie and Ruby" class="about-photo">
             </div>
           </div>
 
@@ -946,6 +1093,15 @@
         if (navEl) navEl.classList.add('active');
         window.scrollTo(0, 0);
         sessionStorage.setItem('lastPage', id);
+        closeMobileNav();
+      }
+
+      function toggleMobileNav() {
+        document.getElementById('nav-links').classList.toggle('open');
+      }
+
+      function closeMobileNav() {
+        document.getElementById('nav-links').classList.remove('open');
       }
 
       document.querySelectorAll('.nav-links a').forEach(a => {
